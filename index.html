@@ -1,82 +1,246 @@
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>KtitiZ News</title>
-<style>
-body{
-    margin:0;
-    font-family:Arial,sans-serif;
-    background:#080018;
-    color:white;
-    text-align:center;
-}
-header{
-    padding:50px 20px;
-    background:linear-gradient(135deg,#061cff,#7a00ff,#00e6d9);
-}
-h1{font-size:48px;margin:0 0 10px;}
-h2{color:#00e6d9;}
-section{
-    max-width:800px;
-    margin:30px auto;
-    padding:25px;
-}
-a{
-    color:#00e6d9;
-    text-decoration:none;
-    font-weight:bold;
-}
-footer{
-    padding:30px;
-    border-top:1px solid #333;
-}
-</style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>KtitiZ News</title>
+
+    <style>
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background: #080018;
+            color: white;
+            text-align: center;
+        }
+
+        header {
+            padding: 50px 20px;
+            background: linear-gradient(135deg, #61cfff, #7a00ff, #00e6d9);
+        }
+
+        h1 {
+            font-size: 48px;
+            margin: 0 0 15px;
+        }
+
+        h2 {
+            color: #00e6d9;
+        }
+
+        section {
+            max-width: 800px;
+            margin: 30px auto;
+            padding: 25px;
+        }
+
+        .frase {
+            font-size: 18px;
+            line-height: 1.7;
+            margin-top: 15px;
+        }
+
+        .idioma {
+            font-weight: bold;
+            color: #00e6d9;
+        }
+
+        /* REDES SOCIALES */
+
+        .redes {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            align-items: center;
+            margin-top: 25px;
+        }
+
+        .boton-red {
+            display: block;
+            width: 300px;
+            padding: 15px 20px;
+            border-radius: 12px;
+            color: white;
+            font-size: 18px;
+            font-weight: bold;
+            text-decoration: none;
+            box-sizing: border-box;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+
+        .boton-red:hover {
+            transform: scale(1.04);
+            text-decoration: none;
+            box-shadow: 0 0 18px rgba(0, 230, 217, 0.6);
+        }
+
+        .instagram {
+            background: linear-gradient(135deg, #ff0066, #7a00ff);
+        }
+
+        .tiktok {
+            background: linear-gradient(135deg, #00e6d9, #111111);
+        }
+
+        .youtube {
+            background: linear-gradient(135deg, #ff0000, #990000);
+        }
+
+        .twitch {
+            background: linear-gradient(135deg, #9146ff, #5b20b5);
+        }
+
+        footer {
+            padding: 30px;
+            border-top: 1px solid #333;
+            line-height: 1.8;
+        }
+
+        .legal a {
+            color: #00e6d9;
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        .legal a:hover {
+            text-decoration: underline;
+        }
+    </style>
 </head>
+
 
 <body>
 
-<header>
-    <h1>KtitiZ News</h1>
-    <p>Zona Creativa Mente Positiva</p>
-</header>
+    <header>
 
-<section>
-    <h2>Noticias de Fortnite</h2>
-    <p>
-        KtitiZ News es una plataforma dedicada a noticias,
-        novedades y contenido relacionado con Fortnite.
-    </p>
-    <p>
-        Nuestro objetivo es ofrecer información y contenido
-        de videojuegos de forma clara y accesible.
-    </p>
-</section>
+        <h1>KtitiZ News</h1>
 
-<section>
-    <h2>Redes sociales</h2>
-    <p>
-        TikTok: @KtitiZ2025<br>
-        YouTube: KtitiZ<br>
-        Twitch: KtitiZ<br>
-        Instagram: KtitiZ2025
-    </p>
-</section>
+        <div class="frase">
+            <div>🇪🇸 Zona Creativa Mente Positiva</div>
+            <div>🇫🇷 Zone Créative Esprit Positif</div>
+            <div>🇬🇧 Creative Zone Positive Mindset</div>
+        </div>
 
-<section>
-    <h2>Información legal</h2>
-    <p>
-        <a href="privacy.html">Política de Privacidad</a>
-        &nbsp; | &nbsp;
-        <a href="terms.html">Términos de Servicio</a>
-    </p>
-</section>
+    </header>
 
-<footer>
-    © 2026 KtitiZ News
-</footer>
+
+    <section>
+
+        <h2>🇪🇸 Noticias de Fortnite</h2>
+
+        <p>
+            KtitiZ News es una plataforma internacional dedicada
+            a noticias, novedades y contenidos relacionados con Fortnite.
+        </p>
+
+        <h2>🇫🇷 Actualités Fortnite</h2>
+
+        <p>
+            KtitiZ News est une plateforme internationale dédiée
+            aux actualités, nouveautés et contenus liés à Fortnite.
+        </p>
+
+        <h2>🇬🇧 Fortnite News</h2>
+
+        <p>
+            KtitiZ News is an international platform dedicated
+            to Fortnite news, updates and related content.
+        </p>
+
+    </section>
+
+
+    <section>
+
+        <h2>🌎 Redes sociales · Réseaux sociaux · Social Media</h2>
+
+        <p>
+            🇪🇸 Sigue a KtitiZ News en nuestras redes sociales.
+        </p>
+
+        <p>
+            🇫🇷 Suivez KtitiZ News sur nos réseaux sociaux.
+        </p>
+
+        <p>
+            🇬🇧 Follow KtitiZ News on our social media.
+        </p>
+
+
+        <div class="redes">
+
+            <a
+                class="boton-red instagram"
+                href="https://www.instagram.com/ktitiz2025/"
+                target="_blank"
+                rel="noopener noreferrer">
+                📸 Instagram · @ktitiz2025
+            </a>
+
+
+            <a
+                class="boton-red tiktok"
+                href="https://www.tiktok.com/@KtitiZ2025"
+                target="_blank"
+                rel="noopener noreferrer">
+                🎵 TikTok · @KtitiZ2025
+            </a>
+
+
+            <a
+                class="boton-red youtube"
+                href="https://www.youtube.com/@KtitiZ"
+                target="_blank"
+                rel="noopener noreferrer">
+                ▶️ YouTube · KtitiZ
+            </a>
+
+
+            <a
+                class="boton-red twitch"
+                href="https://www.twitch.tv/KtitiZ"
+                target="_blank"
+                rel="noopener noreferrer">
+                🟣 Twitch · KtitiZ
+            </a>
+
+        </div>
+
+    </section>
+
+
+    <section class="legal">
+
+        <h2>Información legal · Informations légales · Legal Information</h2>
+
+        <p>
+            <a href="privacidad.html">
+                Política de Privacidad · Politique de confidentialité · Privacy Policy
+            </a>
+        </p>
+
+        <p>
+            <a href="términos.html">
+                Términos de Servicio · Conditions d'utilisation · Terms of Service
+            </a>
+        </p>
+
+    </section>
+
+
+    <footer>
+
+        © 2026 KtitiZ News
+
+        <br>
+
+        🇪🇸 Zona Creativa Mente Positiva ·
+        🇫🇷 Zone Créative Esprit Positif ·
+        🇬🇧 Creative Zone Positive Mindset
+
+    </footer>
 
 </body>
 </html>
-
