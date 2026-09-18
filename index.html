@@ -5,151 +5,731 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <title>KtitiZ News</title>
+    <title>KtitiZ News · Fortnite News</title>
+
+    <meta
+        name="description"
+        content="KtitiZ News · Noticias, novedades y contenidos de Fortnite en español, francés e inglés.">
+
+    <meta name="theme-color" content="#080018">
+
+    <link rel="icon" type="image/png" href="favicon.png">
 
     <style>
+
+        * {
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
         body {
             margin: 0;
-            font-family: Arial, sans-serif;
-            background: #080018;
+            font-family: Arial, Helvetica, sans-serif;
+            background:
+                radial-gradient(
+                    circle at 50% 0%,
+                    rgba(0, 230, 217, 0.12),
+                    transparent 32%
+                ),
+                radial-gradient(
+                    circle at 90% 35%,
+                    rgba(122, 0, 255, 0.14),
+                    transparent 35%
+                ),
+                #080018;
             color: white;
             text-align: center;
         }
 
+        /* =========================
+           CABECERA
+        ========================= */
+
         header {
-            padding: 50px 20px;
-            background: linear-gradient(135deg, #61cfff, #7a00ff, #00e6d9);
+            padding: 35px 20px 45px;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    #61cfff,
+                    #7a00ff,
+                    #00e6d9
+                );
+
+            box-shadow:
+                0 0 30px rgba(0, 230, 217, 0.35);
         }
 
-        h1 {
-            font-size: 48px;
-            margin: 0 0 15px;
+        .logo {
+            width: min(330px, 78vw);
+            height: auto;
+
+            display: block;
+
+            margin: 0 auto 20px;
+
+            border-radius: 50%;
+
+            box-shadow:
+                0 0 20px rgba(0, 230, 217, 0.7),
+                0 0 45px rgba(122, 0, 255, 0.5);
+        }
+
+        header h1 {
+            margin: 0;
+
+            font-size: clamp(32px, 7vw, 52px);
+
+            text-shadow:
+                0 0 12px rgba(0, 0, 0, 0.45);
+        }
+
+        .subtitulo {
+            margin-top: 10px;
+
+            font-size: clamp(16px, 3.5vw, 21px);
+
+            font-weight: bold;
+
+            letter-spacing: 1px;
+        }
+
+        .idiomas {
+            margin-top: 10px;
+
+            font-size: 14px;
+
+            opacity: 0.9;
+        }
+
+        /* =========================
+           SECCIONES
+        ========================= */
+
+        section {
+            width: min(1100px, 92%);
+
+            margin: 45px auto;
+
+            padding: 10px;
         }
 
         h2 {
             color: #00e6d9;
+
+            font-size: clamp(25px, 5vw, 34px);
+
+            margin-bottom: 12px;
+
+            text-shadow:
+                0 0 12px rgba(0, 230, 217, 0.35);
         }
 
-        section {
-            max-width: 800px;
-            margin: 30px auto;
-            padding: 25px;
+        .separador {
+            width: 90px;
+            height: 3px;
+
+            margin: 15px auto 28px;
+
+            border-radius: 10px;
+
+            background:
+                linear-gradient(
+                    90deg,
+                    #00e6d9,
+                    #7a00ff
+                );
         }
 
-        .frase {
-            font-size: 18px;
+        .intro {
+            max-width: 850px;
+
+            margin: 0 auto;
+
+            color: #eeeeee;
+
             line-height: 1.7;
-            margin-top: 15px;
+
+            font-size: 16px;
         }
 
-        /* REDES SOCIALES */
+        /* =========================
+           NOTICIAS
+        ========================= */
+
+        .tarjetas-noticias {
+
+            display: grid;
+
+            grid-template-columns:
+                repeat(3, 1fr);
+
+            gap: 22px;
+
+            margin-top: 25px;
+        }
+
+        .tarjeta-noticia {
+
+            overflow: hidden;
+
+            text-align: left;
+
+            background:
+                linear-gradient(
+                    145deg,
+                    rgba(30, 15, 65, 0.96),
+                    rgba(10, 5, 30, 0.96)
+                );
+
+            border:
+                1px solid rgba(0, 230, 217, 0.45);
+
+            border-radius: 18px;
+
+            box-shadow:
+                0 0 18px rgba(0, 230, 217, 0.12);
+
+            transition:
+                transform 0.25s,
+                box-shadow 0.25s;
+        }
+
+        .tarjeta-noticia:hover {
+
+            transform:
+                translateY(-5px);
+
+            box-shadow:
+                0 0 25px rgba(0, 230, 217, 0.25),
+                0 0 35px rgba(122, 0, 255, 0.15);
+        }
+
+        .imagen-noticia {
+
+            width: 100%;
+
+            aspect-ratio: 16 / 9;
+
+            object-fit: cover;
+
+            display: block;
+
+            background: #12082c;
+        }
+
+        .contenido-noticia {
+
+            padding: 20px;
+        }
+
+        .contenido-noticia h3 {
+
+            margin:
+                0 0 10px;
+
+            color: white;
+
+            font-size: 20px;
+        }
+
+        .fecha-noticia {
+
+            color: #00e6d9;
+
+            font-size: 13px;
+
+            font-weight: bold;
+
+            margin-bottom: 12px;
+        }
+
+        .contenido-noticia p {
+
+            margin: 0;
+
+            color: #dddddd;
+
+            line-height: 1.6;
+
+            font-size: 15px;
+        }
+
+        .noticias-vacias {
+
+            grid-column:
+                1 / -1;
+
+            padding: 30px 20px;
+
+            border:
+                1px dashed rgba(0, 230, 217, 0.45);
+
+            border-radius: 18px;
+
+            color: #cccccc;
+
+            line-height: 1.7;
+
+            background:
+                rgba(20, 10, 45, 0.45);
+        }
+
+        /* =========================
+           TEASERS
+        ========================= */
+
+        .tarjetas-teasers {
+
+            display: grid;
+
+            grid-template-columns:
+                repeat(3, 1fr);
+
+            gap: 22px;
+
+            margin-top: 25px;
+        }
+
+        .tarjeta-teaser {
+
+            overflow: hidden;
+
+            background:
+                linear-gradient(
+                    145deg,
+                    rgba(35, 10, 70, 0.98),
+                    rgba(8, 4, 25, 0.98)
+                );
+
+            border:
+                1px solid rgba(122, 0, 255, 0.55);
+
+            border-radius: 18px;
+
+            box-shadow:
+                0 0 20px rgba(122, 0, 255, 0.15);
+
+            transition:
+                transform 0.25s,
+                box-shadow 0.25s;
+        }
+
+        .tarjeta-teaser:hover {
+
+            transform:
+                translateY(-5px);
+
+            box-shadow:
+                0 0 25px rgba(122, 0, 255, 0.3),
+                0 0 35px rgba(0, 230, 217, 0.12);
+        }
+
+        .video-teaser {
+
+            width: 100%;
+
+            aspect-ratio: 9 / 16;
+
+            display: block;
+
+            object-fit: cover;
+
+            background: #05000d;
+        }
+
+        .contenido-teaser {
+
+            padding: 18px;
+
+            text-align: left;
+        }
+
+        .contenido-teaser h3 {
+
+            margin:
+                0 0 8px;
+
+            color: white;
+
+            font-size: 20px;
+        }
+
+        .contenido-teaser p {
+
+            margin: 0;
+
+            color: #cccccc;
+
+            font-size: 14px;
+
+            line-height: 1.5;
+        }
+
+        .teasers-vacios {
+
+            grid-column:
+                1 / -1;
+
+            padding: 30px 20px;
+
+            border:
+                1px dashed rgba(122, 0, 255, 0.55);
+
+            border-radius: 18px;
+
+            color: #cccccc;
+
+            line-height: 1.7;
+
+            background:
+                rgba(20, 5, 45, 0.45);
+        }
+
+        /* =========================
+           REDES SOCIALES
+        ========================= */
 
         .redes {
+
             display: flex;
+
             flex-direction: column;
+
             gap: 15px;
+
             align-items: center;
+
             margin-top: 25px;
         }
 
         .boton-red {
+
             display: block;
-            width: 300px;
+
+            width: min(360px, 90%);
+
             padding: 15px 20px;
+
             border-radius: 12px;
+
             color: white;
+
             font-size: 18px;
+
             font-weight: bold;
+
             text-decoration: none;
-            box-sizing: border-box;
-            transition: transform 0.2s, box-shadow 0.2s;
+
+            transition:
+                transform 0.2s,
+                box-shadow 0.2s;
         }
 
         .boton-red:hover {
-            transform: scale(1.04);
-            text-decoration: none;
-            box-shadow: 0 0 18px rgba(0, 230, 217, 0.6);
+
+            transform:
+                scale(1.04);
+
+            box-shadow:
+                0 0 18px rgba(0, 230, 217, 0.6);
         }
 
         .instagram {
-            background: linear-gradient(135deg, #ff0066, #7a00ff);
+            background:
+                linear-gradient(
+                    135deg,
+                    #ff0066,
+                    #7a00ff
+                );
         }
 
         .tiktok {
-            background: linear-gradient(135deg, #00e6d9, #111111);
+            background:
+                linear-gradient(
+                    135deg,
+                    #00e6d9,
+                    #111111
+                );
         }
 
         .youtube {
-            background: linear-gradient(135deg, #ff0000, #990000);
+            background:
+                linear-gradient(
+                    135deg,
+                    #ff0000,
+                    #990000
+                );
         }
 
         .twitch {
-            background: linear-gradient(135deg, #9146ff, #5b20b5);
+            background:
+                linear-gradient(
+                    135deg,
+                    #9146ff,
+                    #5b20b5
+                );
         }
 
-        footer {
-            padding: 30px;
-            border-top: 1px solid #333;
-            line-height: 1.8;
+        /* =========================
+           INFORMACIÓN LEGAL
+        ========================= */
+
+        .legal {
+
+            margin-bottom: 35px;
+        }
+
+        .legal p {
+
+            margin: 14px 0;
         }
 
         .legal a {
+
             color: #00e6d9;
+
             text-decoration: none;
+
             font-weight: bold;
         }
 
         .legal a:hover {
+
             text-decoration: underline;
         }
+
+        /* =========================
+           FOOTER
+        ========================= */
+
+        footer {
+
+            padding: 35px 20px;
+
+            border-top:
+                1px solid #333;
+
+            line-height: 1.8;
+
+            color: #cccccc;
+
+            font-size: 14px;
+        }
+
+        /* =========================
+           TABLET
+        ========================= */
+
+        @media (max-width: 850px) {
+
+            .tarjetas-noticias,
+            .tarjetas-teasers {
+
+                grid-template-columns:
+                    repeat(2, 1fr);
+            }
+        }
+
+        /* =========================
+           MÓVIL
+        ========================= */
+
+        @media (max-width: 600px) {
+
+            header {
+
+                padding:
+                    25px 15px 35px;
+            }
+
+            .logo {
+
+                width:
+                    min(260px, 75vw);
+            }
+
+            section {
+
+                width: 94%;
+
+                margin:
+                    35px auto;
+            }
+
+            .tarjetas-noticias,
+            .tarjetas-teasers {
+
+                grid-template-columns:
+                    1fr;
+            }
+
+            .boton-red {
+
+                width: 95%;
+            }
+        }
+
     </style>
+
 </head>
 
 
 <body>
 
+
+    <!-- =========================
+         CABECERA
+    ========================= -->
+
     <header>
+
+        <img
+            class="logo"
+            src="logo-ktitiz-news-500kb.jpg"
+            alt="KtitiZ News">
 
         <h1>KtitiZ News</h1>
 
-        <div class="frase">
-            <div>Zona Creativa Mente Positiva</div>
-            <div>Zone Créative Esprit Positif</div>
-            <div>Creative Zone Positive Mindset</div>
+        <div class="subtitulo">
+            Noticias · Actualités · News
+        </div>
+
+        <div class="idiomas">
+            🇪🇸 Español · 🇫🇷 Français · 🇬🇧 English
         </div>
 
     </header>
 
 
+    <!-- =========================
+         PRESENTACIÓN
+    ========================= -->
+
     <section>
 
-        <h2>Noticias de Fortnite</h2>
+        <div class="intro">
 
-        <p>
-            KtitiZ News es una plataforma internacional dedicada
-            a noticias, novedades y contenidos relacionados con Fortnite.
-        </p>
+            <h2>Noticias de Fortnite</h2>
 
-        <h2>Actualités Fortnite</h2>
+            <div class="separador"></div>
 
-        <p>
-            KtitiZ News est une plateforme internationale dédiée
-            aux actualités, nouveautés et contenus liés à Fortnite.
-        </p>
+            <p>
+                KtitiZ News es una plataforma internacional dedicada
+                a noticias, novedades y contenidos relacionados con Fortnite.
+            </p>
 
-        <h2>Fortnite News</h2>
+            <p>
+                KtitiZ News est une plateforme internationale dédiée
+                aux actualités, nouveautés et contenus liés à Fortnite.
+            </p>
 
-        <p>
-            KtitiZ News is an international platform dedicated
-            to Fortnite news, updates and related content.
-        </p>
+            <p>
+                KtitiZ News is an international platform dedicated
+                to Fortnite news, updates and related content.
+            </p>
+
+        </div>
 
     </section>
 
 
+    <!-- =========================
+         ÚLTIMAS NOTICIAS
+         ZONA PREPARADA PARA PYTHON
+    ========================= -->
+
+    <section id="ultimas-noticias">
+
+        <h2>
+            📰 Últimas Noticias
+        </h2>
+
+        <div class="separador"></div>
+
+        <p>
+            Últimas noticias de Fortnite · Dernières actualités Fortnite · Latest Fortnite News
+        </p>
+
+
+        <div
+            id="noticias"
+            class="tarjetas-noticias">
+
+            <div class="noticias-vacias">
+
+                Las últimas noticias de Fortnite aparecerán aquí automáticamente.
+
+                <br><br>
+
+                Les dernières actualités Fortnite apparaîtront ici automatiquement.
+
+                <br><br>
+
+                The latest Fortnite news will appear here automatically.
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- =========================
+         ÚLTIMOS TEASERS
+         ZONA PREPARADA PARA PYTHON
+    ========================= -->
+
+    <section id="ultimos-teasers">
+
+        <h2>
+            🎬 Últimos Teasers
+        </h2>
+
+        <div class="separador"></div>
+
+        <p>
+            Nuevos teasers · Nouveaux teasers · Latest Teasers
+        </p>
+
+
+        <div
+            id="teasers"
+            class="tarjetas-teasers">
+
+            <div class="teasers-vacios">
+
+                Los últimos teasers de KtitiZ News aparecerán aquí automáticamente.
+
+                <br><br>
+
+                Les derniers teasers de KtitiZ News apparaîtront ici automatiquement.
+
+                <br><br>
+
+                The latest KtitiZ News teasers will appear here automatically.
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- =========================
+         REDES SOCIALES
+    ========================= -->
+
     <section>
 
-        <h2>Redes sociales · Réseaux sociaux · Social Media</h2>
+        <h2>
+            📱 Redes sociales · Réseaux sociaux · Social Media
+        </h2>
+
+        <div class="separador"></div>
 
         <p>
             Sigue a KtitiZ en nuestras redes sociales.
@@ -206,9 +786,17 @@
     </section>
 
 
+    <!-- =========================
+         INFORMACIÓN LEGAL
+    ========================= -->
+
     <section class="legal">
 
-        <h2>Información legal · Informations légales · Legal Information</h2>
+        <h2>
+            ⚖️ Información legal
+        </h2>
+
+        <div class="separador"></div>
 
         <p>
             <a href="privacidad.html">
@@ -225,17 +813,21 @@
     </section>
 
 
+    <!-- =========================
+         FOOTER
+    ========================= -->
+
     <footer>
 
         © 2026 KtitiZ News
 
         <br>
 
-        Zona Creativa Mente Positiva ·
-        Zone Créative Esprit Positif ·
-        Creative Zone Positive Mindset
+        Noticias · Actualités · News
 
     </footer>
 
+
 </body>
+
 </html>
