@@ -37,7 +37,12 @@ async function cargarNoticias() {
 
                 imagen.className = "imagen-noticia";
                 imagen.src = noticia.imagen;
-                imagen.alt = noticia.titulo || "Fortnite News";
+
+                imagen.alt =
+                    noticia.titulo_es ||
+                    noticia.titulo_en ||
+                    "Fortnite News";
+
                 imagen.loading = "lazy";
 
                 imagen.onerror = () => {
@@ -50,14 +55,64 @@ async function cargarNoticias() {
             const contenido = document.createElement("div");
             contenido.className = "contenido-noticia";
 
-            const titulo = document.createElement("h3");
-            titulo.textContent = noticia.titulo || "Fortnite News";
+            // =================================================
+            // ESPAÑOL
+            // =================================================
 
-            const texto = document.createElement("p");
-            texto.textContent = noticia.texto || "";
+            const tituloES = document.createElement("h3");
+            tituloES.textContent =
+                "🇪🇸 " +
+                (noticia.titulo_es || noticia.titulo_en || "Fortnite News");
 
-            contenido.appendChild(titulo);
-            contenido.appendChild(texto);
+            const textoES = document.createElement("p");
+            textoES.textContent =
+                noticia.texto_es || noticia.texto_en || "";
+
+            // =================================================
+            // FRANCÉS
+            // =================================================
+
+            const tituloFR = document.createElement("h3");
+            tituloFR.textContent =
+                "🇫🇷 " +
+                (noticia.titulo_fr || noticia.titulo_en || "Fortnite News");
+
+            const textoFR = document.createElement("p");
+            textoFR.textContent =
+                noticia.texto_fr || noticia.texto_en || "";
+
+            // =================================================
+            // INGLÉS
+            // =================================================
+
+            const tituloEN = document.createElement("h3");
+            tituloEN.textContent =
+                "🇬🇧 " +
+                (noticia.titulo_en || "Fortnite News");
+
+            const textoEN = document.createElement("p");
+            textoEN.textContent =
+                noticia.texto_en || "";
+
+            // =================================================
+            // SEPARADORES
+            // =================================================
+
+            const separador1 = document.createElement("hr");
+            const separador2 = document.createElement("hr");
+
+            contenido.appendChild(tituloES);
+            contenido.appendChild(textoES);
+
+            contenido.appendChild(separador1);
+
+            contenido.appendChild(tituloFR);
+            contenido.appendChild(textoFR);
+
+            contenido.appendChild(separador2);
+
+            contenido.appendChild(tituloEN);
+            contenido.appendChild(textoEN);
 
             tarjeta.appendChild(contenido);
 
@@ -65,7 +120,10 @@ async function cargarNoticias() {
         });
 
     } catch (error) {
-        console.error("Error cargando las noticias:", error);
+        console.error(
+            "Error cargando las noticias:",
+            error
+        );
 
         contenedor.innerHTML = `
             <div class="noticias-vacias">
@@ -76,6 +134,7 @@ async function cargarNoticias() {
         `;
     }
 }
+
 
 function mostrarVacio(contenedor) {
     contenedor.innerHTML = `
