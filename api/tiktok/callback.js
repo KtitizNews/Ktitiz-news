@@ -93,7 +93,7 @@ export default async function handler(req, res) {
                 </head>
                 <body style="background:#080b18;color:white;font-family:Arial;text-align:center;padding:60px;">
                     <h1>No se pudo conectar TikTok</h1>
-                    <p>TokTok no pudo completar la autorización.</p>
+                    <p>TikTok no pudo completar la autorización.</p>
                     <a href="/tiktok-login/" style="color:#00e6d9;">
                         Volver a KtitiZ News
                     </a>
