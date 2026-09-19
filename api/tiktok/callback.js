@@ -1,8 +1,10 @@
+import crypto from "crypto";
+
 export default async function handler(req, res) {
     try {
         const { code, error, error_description } = req.query;
 
-        // El usuario canceló o TikTok devolvió un error
+        // Usuario canceló o TikTok devolvió un error
         if (error) {
             return res.status(400).send(`
                 <!DOCTYPE html>
@@ -61,7 +63,7 @@ export default async function handler(req, res) {
             `);
         }
 
-        // Intercambiar el código temporal por el Access Token
+        // Intercambiar código temporal por Access Token
         const tokenResponse = await fetch(
             "https://open.tiktokapis.com/v2/oauth/token/",
             {
@@ -102,36 +104,80 @@ export default async function handler(req, res) {
             `);
         }
 
-        // No mostramos nunca el Access Token al usuario.
+        const accessToken = tokenData.access_token;
+
+        if (!accessToken) {
+            return res.status(400).send(`
+                <!DOCTYPE html>
+                <html lang="es">
+                <head>
+                    <meta charset="UTF-8">
+                    <title>Error TikTok - KtitiZ News</title>
+                </head>
+                <body style="background:#080b18;color:white;font-family:Arial;text-align:center;padding:60px;">
+                    <h1>No se recibió el Access Token</h1>
+                    <p>TikTok no devolvió un token válido.</p>
+                </body>
+                </html>
+            `);
+        }
+
+        /*
+         * Guardamos el Access Token cifrado.
+         * Nunca se muestra al usuario ni se envía al navegador
+         * como texto visible.
+         */
+
+        const key = crypto
+            .createHash("sha256")
+            .update(clientSecret)
+            .digest();
+
+        const iv = crypto.randomBytes(12);
+
+        const cipher = crypto.createCipheriv(
+            "aes-256-gcm",
+            key,
+            iv
+        );
+
+        let encrypted = cipher.update(
+            accessToken,
+            "utf8",
+            "base64"
+        );
+
+        encrypted += cipher.final("base64");
+
+        const authTag = cipher
+            .getAuthTag()
+            .toString("base64");
+
+        const sessionValue = [
+            iv.toString("base64"),
+            authTag,
+            encrypted
+        ].join(".");
+
+        /*
+         * Cookie HttpOnly:
+         * - No accesible desde JavaScript
+         * - Solo HTTPS
+         * - Se envía automáticamente a nuestras APIs
+         */
+
+        res.setHeader(
+            "Set-Cookie",
+            `tiktok_session=${encodeURIComponent(sessionValue)}; Path=/; HttpOnly; Secure; SameSite=Lax; Max-Age=86400`
+        );
+
         console.log("TikTok OAuth autorizado correctamente.");
 
-        return res.status(200).send(`
-            <!DOCTYPE html>
-            <html lang="es">
-            <head>
-                <meta charset="UTF-8">
-                <meta name="viewport" content="width=device-width, initial-scale=1.0">
-                <title>TikTok conectado - KtitiZ News</title>
-            </head>
-            <body style="margin:0;background:#080b18;color:white;font-family:Arial;text-align:center;">
-                <div style="max-width:650px;margin:0 auto;padding:80px 25px;">
-                    <h1 style="color:#00e6d9;">TikTok conectado</h1>
-                    <p style="font-size:18px;">
-                        La autorización de TikTok se ha completado correctamente.
-                    </p>
-                    <p style="opacity:.8;">
-                        Ya puedes volver a KtitiZ News.
-                    </p>
-                    <a
-                        href="/tiktok-login/"
-                        style="display:inline-block;margin-top:25px;padding:14px 25px;border-radius:12px;background:linear-gradient(135deg,#7a00ff,#00e6d9);color:white;text-decoration:none;font-weight:bold;"
-                    >
-                        Volver a KtitiZ News
-                    </a>
-                </div>
-            </body>
-            </html>
-        `);
+        // Volvemos a la página de Creator
+        return res.redirect(
+            302,
+            "/tiktok-login/?connected=1"
+        );
 
     } catch (error) {
         console.error("TikTok callback error:", error);
