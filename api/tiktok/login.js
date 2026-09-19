@@ -1,3 +1,5 @@
+import crypto from "crypto";
+
 export default function handler(req, res) {
     const clientKey = process.env.TIKTOK_CLIENT_KEY;
     const redirectUri = process.env.TIKTOK_REDIRECT_URI;
@@ -18,7 +20,14 @@ export default function handler(req, res) {
         `);
     }
 
+    // Crear un state único para proteger el flujo OAuth
     const state = crypto.randomUUID();
+
+    // Guardar el state en una cookie segura
+    res.setHeader(
+        "Set-Cookie",
+        `tiktok_oauth_state=${state}; Path=/; HttpOnly; Secure; SameSite=Lax; Max-Age=600`
+    );
 
     const params = new URLSearchParams({
         client_key: clientKey,
