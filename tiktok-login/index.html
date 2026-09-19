@@ -152,6 +152,10 @@
 
             text-decoration: none;
 
+            border: none;
+
+            cursor: pointer;
+
             box-shadow:
                 0 0 20px rgba(0, 230, 217, 0.25);
 
@@ -167,6 +171,92 @@
 
             box-shadow:
                 0 0 25px rgba(0, 230, 217, 0.55);
+        }
+
+        .boton-tiktok:disabled {
+
+            opacity: 0.55;
+
+            cursor: not-allowed;
+
+            transform: none;
+        }
+
+        .zona-video {
+
+            margin-top: 30px;
+
+            padding: 25px 20px;
+
+            border:
+                1px solid rgba(0, 230, 217, 0.25);
+
+            border-radius: 16px;
+
+            background:
+                rgba(0, 0, 0, 0.20);
+        }
+
+        .zona-video h2 {
+
+            margin:
+                0 0 10px;
+
+            font-size: 22px;
+        }
+
+        .selector-video {
+
+            display: block;
+
+            width: 100%;
+
+            margin-top: 18px;
+
+            padding: 14px;
+
+            color: white;
+
+            background: rgba(255, 255, 255, 0.06);
+
+            border:
+                1px solid rgba(0, 230, 217, 0.35);
+
+            border-radius: 12px;
+
+            cursor: pointer;
+        }
+
+        .info-video {
+
+            margin-top: 15px;
+
+            color: #00e6d9;
+
+            font-size: 14px;
+        }
+
+        .estado {
+
+            margin-top: 18px;
+
+            font-size: 15px;
+
+            line-height: 1.5;
+        }
+
+        .exito {
+
+            color: #00e6d9;
+
+            font-weight: bold;
+        }
+
+        .error {
+
+            color: #ff6b8a;
+
+            font-weight: bold;
         }
 
         .volver {
@@ -185,6 +275,11 @@
         .volver:hover {
 
             color: #00e6d9;
+        }
+
+        #zonaVideo {
+
+            display: none;
         }
 
     </style>
@@ -208,22 +303,62 @@
             KtitiZ News · Creator
         </div>
 
-        <p>
+        <p id="mensajePrincipal">
             Conecta tu cuenta de TikTok con KtitiZ News
             para utilizar las funciones de creación y publicación
             de contenido.
         </p>
 
-        <p>
+        <p id="mensajeAutorizacion">
             Serás redirigido a TikTok para autorizar la conexión
             de tu cuenta.
         </p>
 
         <a
+            id="botonConectar"
             class="boton-tiktok"
             href="https://ktitiz-news.vercel.app/api/tiktok/login">
             🎵 Continuar con TikTok
         </a>
+
+        <section
+            id="zonaVideo"
+            class="zona-video">
+
+            <h2>
+                Subir vídeo a TikTok
+            </h2>
+
+            <p>
+                Selecciona un vídeo original para enviarlo
+                a TikTok como borrador.
+            </p>
+
+            <input
+                id="videoFile"
+                class="selector-video"
+                type="file"
+                accept="video/mp4,video/quicktime,video/webm">
+
+            <div
+                id="infoVideo"
+                class="info-video">
+            </div>
+
+            <button
+                id="botonSubir"
+                class="boton-tiktok"
+                type="button"
+                disabled>
+                🎵 Enviar vídeo a TikTok
+            </button>
+
+            <div
+                id="estado"
+                class="estado">
+            </div>
+
+        </section>
 
         <a
             class="volver"
@@ -232,6 +367,362 @@
         </a>
 
     </main>
+
+    <script>
+
+        const params =
+            new URLSearchParams(
+                window.location.search
+            );
+
+        const conectado =
+            params.get("connected") === "1";
+
+        const botonConectar =
+            document.getElementById(
+                "botonConectar"
+            );
+
+        const mensajePrincipal =
+            document.getElementById(
+                "mensajePrincipal"
+            );
+
+        const mensajeAutorizacion =
+            document.getElementById(
+                "mensajeAutorizacion"
+            );
+
+        const zonaVideo =
+            document.getElementById(
+                "zonaVideo"
+            );
+
+        const videoFile =
+            document.getElementById(
+                "videoFile"
+            );
+
+        const infoVideo =
+            document.getElementById(
+                "infoVideo"
+            );
+
+        const botonSubir =
+            document.getElementById(
+                "botonSubir"
+            );
+
+        const estado =
+            document.getElementById(
+                "estado"
+            );
+
+
+        /*
+         * Si TikTok acaba de autorizarse,
+         * mostramos la zona de subida.
+         */
+
+        if (conectado) {
+
+            botonConectar.style.display =
+                "none";
+
+            mensajeAutorizacion.textContent =
+                "Tu cuenta de TikTok está conectada correctamente.";
+
+            mensajePrincipal.textContent =
+                "Ahora puedes seleccionar un vídeo y enviarlo a TikTok como borrador.";
+
+            zonaVideo.style.display =
+                "block";
+        }
+
+
+        /*
+         * Selección del vídeo
+         */
+
+        videoFile.addEventListener(
+            "change",
+            function () {
+
+                const file =
+                    videoFile.files[0];
+
+                if (!file) {
+
+                    botonSubir.disabled =
+                        true;
+
+                    infoVideo.textContent =
+                        "";
+
+                    return;
+                }
+
+
+                const allowedTypes = [
+                    "video/mp4",
+                    "video/webm",
+                    "video/quicktime"
+                ];
+
+
+                if (
+                    !allowedTypes.includes(
+                        file.type
+                    )
+                ) {
+
+                    botonSubir.disabled =
+                        true;
+
+                    infoVideo.textContent =
+                        "Formato no compatible. Usa MP4, WebM o MOV.";
+
+                    return;
+                }
+
+
+                const sizeMB =
+                    file.size /
+                    (1024 * 1024);
+
+
+                infoVideo.textContent =
+                    `Vídeo seleccionado: ${file.name} · ${sizeMB.toFixed(2)} MB`;
+
+
+                botonSubir.disabled =
+                    false;
+
+                estado.textContent =
+                    "";
+
+                estado.className =
+                    "estado";
+            }
+        );
+
+
+        /*
+         * Enviar vídeo
+         */
+
+        botonSubir.addEventListener(
+            "click",
+            async function () {
+
+                const file =
+                    videoFile.files[0];
+
+                if (!file) {
+                    return;
+                }
+
+
+                try {
+
+                    botonSubir.disabled =
+                        true;
+
+                    videoFile.disabled =
+                        true;
+
+                    estado.className =
+                        "estado";
+
+                    estado.textContent =
+                        "Preparando la subida a TikTok...";
+
+
+                    /*
+                     * 1. Pedir a nuestro servidor
+                     *    que inicialice video.upload.
+                     */
+
+                    const initResponse =
+                        await fetch(
+                            "/api/tiktok/upload-init",
+                            {
+                                method: "POST",
+
+                                headers: {
+                                    "Content-Type":
+                                        "application/json"
+                                },
+
+                                body:
+                                    JSON.stringify({
+                                        video_size:
+                                            file.size,
+
+                                        mime_type:
+                                            file.type
+                                    })
+                            }
+                        );
+
+
+                    const initData =
+                        await initResponse.json();
+
+
+                    if (
+                        !initResponse.ok ||
+                        !initData.success
+                    ) {
+
+                        throw new Error(
+                            initData.error ||
+                            "No se pudo iniciar la subida."
+                        );
+                    }
+
+
+                    /*
+                     * 2. TikTok devuelve
+                     *    upload_url.
+                     */
+
+                    const uploadUrl =
+                        initData.upload_url;
+
+                    const chunkSize =
+                        initData.chunk_size;
+
+                    const totalSize =
+                        file.size;
+
+
+                    /*
+                     * 3. Subir los chunks
+                     *    secuencialmente.
+                     */
+
+                    let start = 0;
+
+
+                    while (
+                        start < totalSize
+                    ) {
+
+                        const end =
+                            Math.min(
+                                start +
+                                chunkSize,
+                                totalSize
+                            );
+
+                        const chunk =
+                            file.slice(
+                                start,
+                                end
+                            );
+
+                        const lastByte =
+                            end - 1;
+
+
+                        estado.textContent =
+                            `Enviando vídeo a TikTok... ${Math.round((end / totalSize) * 100)}%`;
+
+
+                        const uploadResponse =
+                            await fetch(
+                                uploadUrl,
+                                {
+                                    method: "PUT",
+
+                                    headers: {
+
+                                        "Content-Type":
+                                            file.type,
+
+                                        "Content-Length":
+                                            String(
+                                                chunk.size
+                                            ),
+
+                                        "Content-Range":
+                                            `bytes ${start}-${lastByte}/${totalSize}`
+                                    },
+
+                                    body:
+                                        chunk
+                                }
+                            );
+
+
+                        if (
+                            !uploadResponse.ok
+                        ) {
+
+                            const errorText =
+                                await uploadResponse.text();
+
+                            console.error(
+                                "TikTok upload error:",
+                                errorText
+                            );
+
+                            throw new Error(
+                                `TikTok rechazó la subida (${uploadResponse.status}).`
+                            );
+                        }
+
+
+                        start =
+                            end;
+                    }
+
+
+                    /*
+                     * 4. Subida completada.
+                     */
+
+                    estado.className =
+                        "estado exito";
+
+                    estado.innerHTML =
+                        `
+                        Vídeo enviado a TikTok.<br><br>
+                        TikTok lo procesará como borrador.
+                        Revisa la notificación de TikTok
+                        para continuar con la edición y publicación.
+                        `;
+
+                    videoFile.disabled =
+                        false;
+
+
+                } catch (error) {
+
+                    console.error(
+                        "Upload error:",
+                        error
+                    );
+
+                    estado.className =
+                        "estado error";
+
+                    estado.textContent =
+                        error.message ||
+                        "No se pudo enviar el vídeo a TikTok.";
+
+                    videoFile.disabled =
+                        false;
+
+                    botonSubir.disabled =
+                        false;
+                }
+
+            }
+        );
+
+    </script>
 
 </body>
 
