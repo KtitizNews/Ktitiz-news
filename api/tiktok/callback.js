@@ -220,7 +220,7 @@ export default async function handler(req, res) {
         res.setHeader(
             "Set-Cookie",
             [
-                `tiktok_session=${encodeURIComponent(sessionValue)}; Path=/; HttpOnly; Secure; SameSite=Lax; Max-Age=86400`,
+                `tiktok_session=${encodeURIComponent(sessionValue)}; Path=/; HttpOnly; Secure; SameSite=None; Max-Age=86400`,
                 "tiktok_oauth_state=; Path=/; HttpOnly; Secure; SameSite=Lax; Max-Age=0"
             ]
         );
