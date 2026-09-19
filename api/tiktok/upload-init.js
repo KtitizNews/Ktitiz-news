@@ -1,34 +1,69 @@
 import crypto from "crypto";
 
 export default async function handler(req, res) {
+
+    const allowedOrigin =
+        "https://ktitiznews.github.io";
+
+    res.setHeader(
+        "Access-Control-Allow-Origin",
+        allowedOrigin
+    );
+
+    res.setHeader(
+        "Access-Control-Allow-Credentials",
+        "true"
+    );
+
+    res.setHeader(
+        "Access-Control-Allow-Methods",
+        "POST, OPTIONS"
+    );
+
+    res.setHeader(
+        "Access-Control-Allow-Headers",
+        "Content-Type"
+    );
+
+    if (req.method === "OPTIONS") {
+        return res.status(204).end();
+    }
+
     try {
+
         if (req.method !== "POST") {
             return res.status(405).json({
                 error: "Method not allowed"
             });
         }
 
-        const cookies = req.headers.cookie || "";
+        const cookies =
+            req.headers.cookie || "";
 
-        const sessionMatch = cookies.match(
-            /(?:^|;\s*)tiktok_session=([^;]+)/
-        );
+        const sessionMatch =
+            cookies.match(
+                /(?:^|;\s*)tiktok_session=([^;]+)/
+            );
 
         if (!sessionMatch) {
             return res.status(401).json({
-                error: "TikTok no está conectado"
+                error:
+                    "TikTok no está conectado"
             });
         }
 
-        const sessionValue = decodeURIComponent(
-            sessionMatch[1]
-        );
+        const sessionValue =
+            decodeURIComponent(
+                sessionMatch[1]
+            );
 
-        const parts = sessionValue.split(".");
+        const parts =
+            sessionValue.split(".");
 
         if (parts.length !== 3) {
             return res.status(401).json({
-                error: "Sesión TikTok inválida"
+                error:
+                    "Sesión TikTok inválida"
             });
         }
 
@@ -42,46 +77,48 @@ export default async function handler(req, res) {
             });
         }
 
-        /*
-         * Recuperar Access Token
-         */
+        const iv =
+            Buffer.from(
+                parts[0],
+                "base64"
+            );
 
-        const iv = Buffer.from(
-            parts[0],
-            "base64"
+        const authTag =
+            Buffer.from(
+                parts[1],
+                "base64"
+            );
+
+        const encrypted =
+            Buffer.from(
+                parts[2],
+                "base64"
+            );
+
+        const key =
+            crypto
+                .createHash("sha256")
+                .update(clientSecret)
+                .digest();
+
+        const decipher =
+            crypto.createDecipheriv(
+                "aes-256-gcm",
+                key,
+                iv
+            );
+
+        decipher.setAuthTag(
+            authTag
         );
 
-        const authTag = Buffer.from(
-            parts[1],
-            "base64"
-        );
-
-        const encrypted = Buffer.from(
-            parts[2],
-            "base64"
-        );
-
-        const key = crypto
-            .createHash("sha256")
-            .update(clientSecret)
-            .digest();
-
-        const decipher = crypto.createDecipheriv(
-            "aes-256-gcm",
-            key,
-            iv
-        );
-
-        decipher.setAuthTag(authTag);
-
-        const accessToken = Buffer.concat([
-            decipher.update(encrypted),
-            decipher.final()
-        ]).toString("utf8");
-
-        /*
-         * Datos enviados por la página
-         */
+        const accessToken =
+            Buffer.concat([
+                decipher.update(
+                    encrypted
+                ),
+                decipher.final()
+            ]).toString("utf8");
 
         const {
             video_size,
@@ -92,7 +129,9 @@ export default async function handler(req, res) {
             Number(video_size);
 
         if (
-            !Number.isSafeInteger(videoSize) ||
+            !Number.isSafeInteger(
+                videoSize
+            ) ||
             videoSize <= 0
         ) {
             return res.status(400).json({
@@ -101,11 +140,6 @@ export default async function handler(req, res) {
             });
         }
 
-        /*
-         * TikTok acepta:
-         * MP4, WebM y MOV.
-         */
-
         const allowedTypes = [
             "video/mp4",
             "video/webm",
@@ -113,69 +147,72 @@ export default async function handler(req, res) {
         ];
 
         const mimeType =
-            allowedTypes.includes(mime_type)
+            allowedTypes.includes(
+                mime_type
+            )
                 ? mime_type
                 : "video/mp4";
 
-        /*
-         * TikTok:
-         * - < 5 MB  -> un solo chunk
-         * - 5 MB a 64 MB -> podemos usar
-         *   el vídeo completo como chunk
-         * - > 64 MB -> chunks de 64 MB
-         */
-
-        const MB = 1024 * 1024;
+        const MB =
+            1024 * 1024;
 
         let chunkSize;
 
-        if (videoSize < 5 * MB) {
-            chunkSize = videoSize;
-        } else if (videoSize <= 64 * MB) {
-            chunkSize = videoSize;
+        if (
+            videoSize <
+            5 * MB
+        ) {
+            chunkSize =
+                videoSize;
+        } else if (
+            videoSize <=
+            64 * MB
+        ) {
+            chunkSize =
+                videoSize;
         } else {
-            chunkSize = 64 * MB;
+            chunkSize =
+                64 * MB;
         }
 
         const totalChunkCount =
             Math.ceil(
-                videoSize / chunkSize
+                videoSize /
+                chunkSize
             );
 
-        /*
-         * Inicializar Upload Video
-         */
+        const response =
+            await fetch(
+                "https://open.tiktokapis.com/v2/post/publish/inbox/video/init/",
+                {
+                    method: "POST",
 
-        const response = await fetch(
-            "https://open.tiktokapis.com/v2/post/publish/inbox/video/init/",
-            {
-                method: "POST",
+                    headers: {
+                        "Authorization":
+                            `Bearer ${accessToken}`,
 
-                headers: {
-                    "Authorization":
-                        `Bearer ${accessToken}`,
+                        "Content-Type":
+                            "application/json; charset=UTF-8"
+                    },
 
-                    "Content-Type":
-                        "application/json; charset=UTF-8"
-                },
+                    body:
+                        JSON.stringify({
+                            source_info: {
+                                source:
+                                    "FILE_UPLOAD",
 
-                body: JSON.stringify({
-                    source_info: {
-                        source:
-                            "FILE_UPLOAD",
+                                video_size:
+                                    videoSize,
 
-                        video_size:
-                            videoSize,
+                                chunk_size:
+                                    chunkSize,
 
-                        chunk_size:
-                            chunkSize,
-
-                        total_chunk_count:
-                            totalChunkCount
-                    }
-                })
-            }
-        );
+                                total_chunk_count:
+                                    totalChunkCount
+                            }
+                        })
+                }
+            );
 
         const data =
             await response.json();
@@ -184,6 +221,7 @@ export default async function handler(req, res) {
             !response.ok ||
             data.error?.code !== "ok"
         ) {
+
             console.error(
                 "TikTok upload init error:",
                 data
@@ -199,7 +237,9 @@ export default async function handler(req, res) {
         }
 
         return res.status(200).json({
-            success: true,
+
+            success:
+                true,
 
             upload_url:
                 data.data.upload_url,
